@@ -2,13 +2,16 @@
   <div>
     <Header />
     <Nuxt />
+    <!-- <Apdp/> -->
   </div>
 </template>
 <script>
 import Header from '~~/components/Header.vue'
+// import Apdp from '~~/components/apdp.vue'
 export default {
   components: {
-    Header
+    Header,
+    // Apdp
   }
 }
 
