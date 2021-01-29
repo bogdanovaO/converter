@@ -1,33 +1,41 @@
 <template>
   <div style="width: 100%">
     <div :class="$style.title">
-      Converter: Bitcoin (BTC), Ether (ETH), US Dollar (USD)
-    </div>
+      Converter: Bitcoin (BTC), Ether (ETH), US Dollar (USD)</div>
 
     <div :class="$style.wrap">
       <div class="tabs">
         <ul>
           <li
             v-bind:class="{ 'is-active': !charts }"
-            v-on:click="charts = false"
-          >
+            v-on:click="charts = false">
             <a>converter</a>
           </li>
           <li v-bind:class="{ 'is-active': charts }" v-on:click="charts = true">
             <a>charts</a>
           </li>
         </ul>
+        <fa style="color: #3273dc" :icon="['fas', 'dollar-sign']" />
+        <fa
+          style="color: #3273dc; margin: 0 5px"
+          :class="$style.icon"
+          :icon="['fab', 'btc']"
+        />
+        <fa
+          style="color: #3273dc"
+          :class="$style.icon"
+          :icon="['fab', 'ethereum']"
+        />
       </div>
       <div v-if="!charts">
         <div class="columns" :class="$style.content">
           <div class="field" :class="$style.content__item">
             <label class="label" :class="$style.label">Amount</label>
             <input
-
-            @change="rerenderInput"
+              @change="rerenderInput"
               class="input"
               type="text"
-              placeholder="Text input"
+              placeholder="enter the amount"
               v-model="num"
             />
           </div>
@@ -37,7 +45,6 @@
               <select @change="onChangeFirst($event)" :class="$style.select">
                 <option value="bitcoin">BTC</option>
                 <option value="ethereum">ETH</option>
-                <option value="dollar">USD</option>
               </select>
             </div>
           </div>
@@ -60,6 +67,7 @@
           >
             >
           </button>
+          <div></div>
         </div>
         <div v-if="convertStatus" :class="$style.resultGroup">
           <div class="textColor" :class="$style.request">
@@ -81,7 +89,6 @@
               <select @change="onChangeChartFirst($event)">
                 <option value="bitcoin">BTC</option>
                 <option value="ethereum">ETH</option>
-                <!-- <option value="dollar">USD</option> -->
               </select>
             </div>
           </div>
@@ -104,18 +111,18 @@
             >
           </button>
         </div>
-        <Apdp v-if="chartValues != 0"/>
+        <AreaChart v-if="chartValues != 0" />
       </div>
     </div>
   </div>
 </template>
 <script>
-import Apdp from "~~/components/apdp.vue";
+import AreaChart from "./AreaChart.vue";
 import axios from "axios";
 import { mapState } from "vuex";
 export default {
   components: {
-    Apdp,
+    AreaChart,
   },
   data() {
     return {
@@ -126,8 +133,7 @@ export default {
       firstChart: "bitcoin",
       secondChart: "usd",
       charts: false,
-      convertStatus: false,
-      // arr: []
+      convertStatus: false
     };
   },
   computed: {
@@ -140,33 +146,30 @@ export default {
   methods: {
     onChangeFirst(event) {
       this.firstNum = event.target.value;
-            this.convertStatus = false
+      this.convertStatus = false;
     },
     onChangeSecond(event) {
       this.secondNum = event.target.value;
-                this.convertStatus = false
+      this.convertStatus = false;
     },
     onChangeChartFirst(event) {
       this.firstChart = event.target.value;
-      const value = 0
+      const value = 0;
       return this.$store.commit("SET_CHART", value);
     },
     onChangeChartSecond(event) {
       this.secondChart = event.target.value;
-      const value = 0
+      const value = 0;
       return this.$store.commit("SET_CHART", value);
     },
     rerenderInput() {
-      this.convertStatus = false
+      this.convertStatus = false;
     },
     getData() {
-      const currentDate = new Date();
-      const timestamp = currentDate.getTime();
-      const magicNumber = 12096e5;
-      const dateTo = timestamp + magicNumber;
-      console.log(timestamp);
-      console.log(dateTo);
-      console.log(currentDate);
+      // const currentDate = new Date();
+      // const timestamp = currentDate.getTime();
+      // const magicNumber = 12096e5;
+      // const dateTo = timestamp + magicNumber;
       axios
         .get(
           `https://api.coingecko.com/api/v3/simple/price?ids=${this.firstNum}&vs_currencies=${this.secondNum}`,
@@ -177,22 +180,18 @@ export default {
           }
         )
         .then((res) => {
-          
           const obj = Object.values(res.data)[0];
           const objectArray = Object.entries(obj);
           objectArray.forEach(([key, value]) => {
             const vGeneration = Number(value) * Number(this.num);
-            console.log(value);
-            console.log(vGeneration);
-                      this.convertStatus = true
+            this.convertStatus = true;
             return this.$store.commit("SET_RESULT", { key, vGeneration });
-                    
           });
         })
         .catch((error) => console.log(error.message));
     },
     getChart() {
-       axios
+      axios
         .get(
           `https://api.coingecko.com/api/v3/coins/${this.firstChart}/market_chart?vs_currency=${this.secondChart}&days=91`,
           {
@@ -202,14 +201,12 @@ export default {
           }
         )
         .then((res) => {
-          // console.log(res.data.prices)
           const arrOfArrays = res.data.prices.splice(78, 14);
-
           let customArr = () => {
             const arrOfObjects = [];
             for (let i = 0; i < arrOfArrays.length; i++) {
               let customObject = {
-                ['day']: arrOfArrays[i][1],
+                ["day"]: arrOfArrays[i][1],
               };
               arrOfObjects.push(customObject);
             }
@@ -217,16 +214,13 @@ export default {
           };
 
           const value = customArr();
-          console.log(value);
 
           return this.$store.commit("SET_CHART", value);
-          
         })
         .catch((error) => console.log(error.message));
     },
   },
 };
-    
 </script>
 
 <style lang="sass" module>
@@ -243,19 +237,15 @@ export default {
   margin-top: 50px
 .result
   font-size: 30px
-
 .wrap
-  // box-shadow: 0 0 24px 0 rgba(0,0,0,.5)
   background: #fff
   padding: 40px
   width: 100%
-  // margin-top: 50px
 .content
   margin: 0 auto
   justify-content: space-between
   &__item
     width: 30%
-
 .button
   margin-top: 2rem
 .label

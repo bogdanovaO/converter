@@ -31,8 +31,15 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
+    '@nuxtjs/fontawesome'
   ],
-
+  fontawesome: {
+    component: 'fa',
+    icons: {
+      solid: ['faExchangeAlt','faCoins', 'faDollarSign'],
+      brands: ['faBtc','faEthereum']
+    }
+  },
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/bootstrap

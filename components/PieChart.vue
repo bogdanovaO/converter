@@ -3,6 +3,16 @@ import { Pie } from "vue-chartjs";
 
 export default {
   extends: Pie,
+  props: {
+    dataBtc: {
+      type: Number,
+      default: null
+    },
+    dataEth: {
+      type: Number,
+      default: null
+    }
+},
   mounted() {
     this.gradient = this.$refs.canvas
       .getContext("2d")
@@ -20,11 +30,12 @@ export default {
     this.gradient2.addColorStop(1, "rgba(0, 231, 255, 0)");
     this.renderChart(
       {
-        labels: ["Books", "Magazines", "Newspapers"],
+        labels: ["bitcoin", "ethereum" ],
         datasets: [
           {
             backgroundColor: [this.gradient, this.gradient2, "#00D8FF"],
-            data: [40, 20, 10]
+            data: [this._props.dataBtc, this._props.dataEth]
+
           }
         ]
       },
@@ -32,4 +43,5 @@ export default {
     );
   }
 };
+  
 </script>

@@ -51,7 +51,7 @@ export default {
         ],
         datasets: [
           {
-            // label: false,
+            label: 'currency',
             borderColor: "#FC2525",
             pointBackgroundColor: "white",
             borderWidth: 1,

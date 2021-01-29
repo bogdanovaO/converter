@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style>
+
 .container {
   margin: 0 15%;
   /* min-height: 100vh; */
