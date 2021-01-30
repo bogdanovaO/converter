@@ -1,10 +1,18 @@
+
+
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
 
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
-
+  // router: {
+  //   base: '/converter/'
+  // },
+  mode: 'spa',
+  router: {
+     base: '/converter/',
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'converter',
@@ -55,12 +63,11 @@ export default {
   },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
-    postcss: {
-      preset: {
-        features: {
-          customProperties: false
-        }
-      }
-    },
+    /*
+    ** You can extend webpack config here
+    */
+    extend(config, ctx) {
+
+    }
   }
 }
