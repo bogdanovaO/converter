@@ -1,5 +1,4 @@
 
-
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
@@ -44,13 +43,12 @@ export default {
   fontawesome: {
     component: 'fa',
     icons: {
-      solid: ['faExchangeAlt','faCoins', 'faDollarSign', "faCheck"],
+      solid: ['faExchangeAlt','faCoins', 'faDollarSign', 'faCheck', 'faArrowRight'],
       brands: ['faBtc','faEthereum']
     }
   },
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
     '@nuxtjs/bulma',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'

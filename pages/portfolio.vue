@@ -6,8 +6,7 @@
       <div :class="$style.wrap">
         <div :class="$style.headOfContent">
           <div style="color: #3273dc; font-weight: bold">
-            {{ Math.round(sum)
-            }}<fa
+            {{ Math.round(sum)}}<fa
               style="color: #3273dc; margin-left: 5px"
               :icon="['fas', 'dollar-sign']"
             />
@@ -19,10 +18,7 @@
                 modal = true;
                 buying = true;
                 selling = false;
-              "
-            >
-              buy
-            </button>
+              ">buy</button>
 
             <button
               class="button is-danger"
@@ -102,7 +98,7 @@
                 class="button is-link"
                 style="margin-top: 2rem"
               >
-                buy
+                 <fa style="color: #fff" :icon="['fas', 'arrow-right']" />
               </button>
               <button
                 v-bind:class="{ 'is-hidden': !complete }"
@@ -142,7 +138,7 @@
                 class="button is-link"
                 style="margin-top: 2rem"
               >
-                sell
+                 <fa style="color: #fff" :icon="['fas', 'arrow-right']" />
               </button>
               <button
                 v-bind:class="{ 'is-hidden': !complete }"

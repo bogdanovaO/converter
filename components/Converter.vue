@@ -1,14 +1,19 @@
 <template>
   <div style="width: 100%">
-    <div :class="$style.title">
-      Converter: Bitcoin (BTC), Ether (ETH), US Dollar (USD)</div>
-
+    <div :class="$style.title" v-if="!charts">
+      Converter: Bitcoin (BTC), Ether (ETH), US Dollar (USD)
+    </div>
+    <div :class="$style.title" v-else>
+      Charts: from BTC/ETH to BTC/ETH/USD
+    </div>
+    
     <div :class="$style.wrap">
       <div class="tabs">
         <ul>
           <li
             v-bind:class="{ 'is-active': !charts }"
-            v-on:click="charts = false">
+            v-on:click="charts = false"
+          >
             <a>converter</a>
           </li>
           <li v-bind:class="{ 'is-active': charts }" v-on:click="charts = true">
@@ -65,8 +70,10 @@
             class="button is-link"
             :class="$style.button"
           >
-            >
+            <fa style="color: #fff" :icon="['fas', 'arrow-right']" />
+            
           </button>
+
           <div></div>
         </div>
         <div v-if="convertStatus" :class="$style.resultGroup">
@@ -108,10 +115,10 @@
             class="button is-link"
             :class="$style.button"
           >
-            >
+            <fa style="color: #fff" :icon="['fas', 'arrow-right']" />
           </button>
         </div>
-        <AreaChart v-if="chartValues !== 0"  />
+        <AreaChart v-if="chartValues !== 0" />
       </div>
     </div>
   </div>
@@ -133,7 +140,7 @@ export default {
       firstChart: "bitcoin",
       secondChart: "usd",
       charts: false,
-      convertStatus: false
+      convertStatus: false,
     };
   },
   computed: {
@@ -187,7 +194,6 @@ export default {
         .catch((error) => console.log(error.message));
     },
     getChart() {
-
       axios
         .get(
           `https://api.coingecko.com/api/v3/coins/${this.firstChart}/market_chart?vs_currency=${this.secondChart}&days=91`,
@@ -198,17 +204,16 @@ export default {
           }
         )
         .then((res) => {
-
           const arrOfArrays = res.data.prices.splice(77, 14);
           let customArr = () => {
-
             const arrOfObjects = [];
-            
+
             for (let i = 0; i < arrOfArrays.length; i++) {
               let customObject = {
                 ["course"]: arrOfArrays[i][1],
-                ["data"]: new Date(arrOfArrays[i][0]).toUTCString().substr(5, 5) 
-
+                ["data"]: new Date(arrOfArrays[i][0])
+                  .toUTCString()
+                  .substr(5, 5),
               };
               arrOfObjects.push(customObject);
             }
@@ -222,7 +227,6 @@ export default {
   },
 };
 </script>
-
 <style lang="sass" module>
 .select
   width: 100%!important

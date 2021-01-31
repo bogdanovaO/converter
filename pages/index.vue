@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <Converter/>
- <!-- <NuxtLink to="/portfolio">portfolio</NuxtLink> -->
   </div>
 </template>
 
@@ -11,12 +10,9 @@ export default {
   components: {
     Converter
   }
-
 }
 </script>
-
 <style>
-
 .container {
   margin: 0 15%;
   /* min-height: 100vh; */
