@@ -111,7 +111,7 @@
             >
           </button>
         </div>
-        <AreaChart v-if="chartValues != 0" />
+        <AreaChart v-if="chartValues !== 0"  />
       </div>
     </div>
   </div>
@@ -166,10 +166,6 @@ export default {
       this.convertStatus = false;
     },
     getData() {
-      // const currentDate = new Date();
-      // const timestamp = currentDate.getTime();
-      // const magicNumber = 12096e5;
-      // const dateTo = timestamp + magicNumber;
       axios
         .get(
           `https://api.coingecko.com/api/v3/simple/price?ids=${this.firstNum}&vs_currencies=${this.secondNum}`,
@@ -191,6 +187,7 @@ export default {
         .catch((error) => console.log(error.message));
     },
     getChart() {
+
       axios
         .get(
           `https://api.coingecko.com/api/v3/coins/${this.firstChart}/market_chart?vs_currency=${this.secondChart}&days=91`,
@@ -201,20 +198,23 @@ export default {
           }
         )
         .then((res) => {
-          const arrOfArrays = res.data.prices.splice(78, 14);
+
+          const arrOfArrays = res.data.prices.splice(77, 14);
           let customArr = () => {
+
             const arrOfObjects = [];
+            
             for (let i = 0; i < arrOfArrays.length; i++) {
               let customObject = {
-                ["day"]: arrOfArrays[i][1],
+                ["course"]: arrOfArrays[i][1],
+                ["data"]: new Date(arrOfArrays[i][0]).toUTCString().substr(5, 5) 
+
               };
               arrOfObjects.push(customObject);
             }
             return arrOfObjects;
           };
-
           const value = customArr();
-
           return this.$store.commit("SET_CHART", value);
         })
         .catch((error) => console.log(error.message));

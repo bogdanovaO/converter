@@ -15,6 +15,8 @@ export default {
     }),
   },
   mounted() {
+console.log(this.chartValues)
+
     this.gradient = this.$refs.canvas
       .getContext("2d")
       .createLinearGradient(0, 0, 0, 450);
@@ -33,22 +35,7 @@ export default {
 
     this.renderChart(
       {
-        labels: [
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "13",
-          "14"
-        ],
+        labels: [this.chartValues[0].data, this.chartValues[1].data, this.chartValues[2].data, this.chartValues[3].data, this.chartValues[4].data, this.chartValues[5].data, this.chartValues[6].data, this.chartValues[7].data, this.chartValues[8].data, this.chartValues[9].data, this.chartValues[10].data, this.chartValues[11].data, this.chartValues[12].data, this.chartValues[13].data],
         datasets: [
           {
             label: 'currency',
@@ -57,17 +44,8 @@ export default {
             borderWidth: 1,
             pointBorderColor: "white",
             backgroundColor: this.gradient,
-            data: [this.chartValues[0].day, this.chartValues[1].day, this.chartValues[2].day, this.chartValues[3].day, this.chartValues[4].day, this.chartValues[5].day, this.chartValues[6].day, this.chartValues[7].day, this.chartValues[8].day, this.chartValues[9].day, this.chartValues[10].day, this.chartValues[11].day, this.chartValues[12].day, this.chartValues[13].day]
+            data: [this.chartValues[0].course, this.chartValues[1].course, this.chartValues[2].course, this.chartValues[3].course, this.chartValues[4].course, this.chartValues[5].course, this.chartValues[6].course, this.chartValues[7].course, this.chartValues[8].course, this.chartValues[9].course, this.chartValues[10].course, this.chartValues[11].course, this.chartValues[12].course, this.chartValues[13].course]
           }
-          // {
-          //   label: "Data Two",
-          //   borderColor: "#05CBE1",
-          //   pointBackgroundColor: "white",
-          //   pointBorderColor: "white",
-          //   borderWidth: 1,
-          //   backgroundColor: this.gradient2,
-          //   data: [60, 55, 32, 10, 2, 12, 53]
-          // }
         ]
       },
       { responsive: true, maintainAspectRatio: false }

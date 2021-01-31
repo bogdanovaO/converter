@@ -6,15 +6,34 @@
       <div :class="$style.wrap">
         <div :class="$style.headOfContent">
           <div style="color: #3273dc; font-weight: bold">
-            {{ sum
+            {{ Math.round(sum)
             }}<fa
               style="color: #3273dc; margin-left: 5px"
               :icon="['fas', 'dollar-sign']"
             />
           </div>
           <div>
-            <button class="button is-primary" v-on:click="buy">buy</button>
-            <button class="button is-danger" v-on:click="sell">sell</button>
+            <button
+              class="button is-primary"
+              @click="
+                modal = true;
+                buying = true;
+                selling = false;
+              "
+            >
+              buy
+            </button>
+
+            <button
+              class="button is-danger"
+              @click="
+                modal = true;
+                selling = true;
+                buying = false;
+              "
+            >
+              sell
+            </button>
           </div>
         </div>
 
@@ -46,14 +65,21 @@
 
         <div class="modal" v-bind:class="{ 'is-active': modal }">
           <div class="modal-background"></div>
-          <div class="modal-content">
-            <div :class="$style.modalWrap" class="columns" v-if="buying">
+
+          <div class="modal-content" :class="$style.mContent">
+            <button
+              class="modal-close is-large"
+              :class="$style.close"
+              aria-label="close"
+              @click="close"
+            ></button>
+            <div :class="$style.modalWrap" v-if="buying">
               <div class="field" :class="$style.content__item">
                 <label class="label" :class="$style.label">quantity</label>
                 <input
                   class="input"
-                  type="text"
-                  placeholder="Text input"
+                  type="number"
+                  placeholder="enter the amount"
                   v-model="num"
                 />
               </div>
@@ -71,20 +97,29 @@
               </div>
 
               <button
-                v-on:click="buy"
-                :class="$style.button"
+                v-bind:class="{ 'is-hidden': complete }"
+                @click="buy"
                 class="button is-link"
+                style="margin-top: 2rem"
               >
-                >
+                buy
+              </button>
+              <button
+                v-bind:class="{ 'is-hidden': !complete }"
+                style="margin-top: 2rem"
+                class="button is-primary"
+              >
+                <fa style="color: #fff" :icon="['fas', 'check']" />
               </button>
             </div>
-            <div :class="$style.modalWrap" class="columns" v-if="selling">
+
+            <div :class="$style.modalWrap" v-if="selling">
               <div class="field" :class="$style.content__item">
                 <label class="label" :class="$style.label">quantity</label>
                 <input
                   class="input"
-                  type="text"
-                  placeholder="Text input"
+                  type="number"
+                  placeholder="enter the amount"
                   v-model="num"
                 />
               </div>
@@ -102,19 +137,22 @@
               </div>
 
               <button
-                :class="$style.button"
+                v-bind:class="{ 'is-hidden': complete }"
                 @click="sell"
                 class="button is-link"
+                style="margin-top: 2rem"
               >
-                >
+                sell
+              </button>
+              <button
+                v-bind:class="{ 'is-hidden': !complete }"
+                style="margin-top: 2rem"
+                class="button is-primary"
+              >
+                <fa style="color: #fff" :icon="['fas', 'check']" />
               </button>
             </div>
           </div>
-          <button
-            class="modal-close is-large"
-            aria-label="close"
-            @click="close"
-          ></button>
         </div>
         <PieChart
           style="margin-top: 40px"
@@ -141,8 +179,8 @@ export default {
     return {
       bitcoin: "",
       ethereum: "",
-      totalBitcoin: 10,
-      totalEtheriun: 5,
+      totalBitcoin: 17,
+      totalEtheriun: 36,
       sum: "",
       modal: false,
       buying: false,
@@ -151,6 +189,7 @@ export default {
       currentCurrency: "btc",
       componentKey: 0,
       changed: false,
+      complete: false,
     };
   },
   computed: {
@@ -171,34 +210,40 @@ export default {
         this.sum =
           this.bitcoin * this.totalBitcoin + this.ethereum * this.totalEtheriun;
       }
+      this.complete = true;
     },
     sell() {
-      this.modal = true;
-      this.selling = true;
-      this.modal = true;
-
+      debugger
       if (
         this.currentCurrency === "btc" &&
         this.num > 0 &&
-        this.num < this.totalBitcoin
+        this.num < this.totalBitcoin 
       ) {
         this.totalBitcoin = this.totalBitcoin - +this.num;
         this.num = "";
         this.sum =
           this.bitcoin * this.totalBitcoin + this.ethereum * this.totalEtheriun;
-        console.log(this.selling);
-        console.log(this.buying);
-      } else {
+      } else if (
+        this.currentCurrency === "eth" &&
+        this.num > 0 &&
+        this.num < this.totalEtheriun 
+      ) {
+        debugger
         this.totalEtheriun = this.totalEtheriun - +this.num;
         this.num = "";
         this.sum =
           this.bitcoin * this.totalBitcoin + this.ethereum * this.totalEtheriun;
+      } else {
+        alert('not enough funds')
       }
+
+      this.complete = true;
     },
     close() {
       this.modal = false;
       this.selling = false;
       this.buying = false;
+      this.complete = false;
     },
     onChangeCurrentCurrency(event) {
       this.currentCurrency = event.target.value;
@@ -222,12 +267,21 @@ export default {
             this.ethereum * this.totalEtheriun;
           console.log(this.sun);
         })
-        .catch((error) => console.log(error.message));
+        .catch((error) => alert('Houston, we have a problem:' + error.message));
     },
   },
 };
 </script>
 <style lang="sass" module>
+.close
+  position: relative!important
+  color: #000
+  background-color: rgb(50, 115, 220)
+  float: right
+.label
+  text-align: left
+.complete
+  align-self: flex-end
 .button
   margin-top: 2rem
 .border
@@ -236,7 +290,7 @@ export default {
   display: flex
   justify-content: space-between
   margin-bottom: 40px
-.select
+.la
 .title
   color: #fff
   font-weight: bold
@@ -244,12 +298,18 @@ export default {
   padding-bottom: 30px
   margin-top: 50px
 .modalWrap
-  background: #fff
+
   padding: 40px
   box-sizing: border-box
   width: 100%
+  flex-wrap: wrap
+  display: flex
+  // margin-bottom: 0!important
 .wrap
   background: #fff
   padding: 40px
   width: 100%
+.mContent
+  background: #fff
+  margin: auto auto!important
 </style>

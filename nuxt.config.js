@@ -9,7 +9,7 @@ export default {
   // router: {
   //   base: '/converter/'
   // },
-  mode: 'spa',
+  // mode: 'spa',
   router: {
      base: '/converter/',
   },
@@ -44,7 +44,7 @@ export default {
   fontawesome: {
     component: 'fa',
     icons: {
-      solid: ['faExchangeAlt','faCoins', 'faDollarSign'],
+      solid: ['faExchangeAlt','faCoins', 'faDollarSign', "faCheck"],
       brands: ['faBtc','faEthereum']
     }
   },
